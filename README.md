@@ -1,1 +1,0 @@
-# FIFAWorldCup2026

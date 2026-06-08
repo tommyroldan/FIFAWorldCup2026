@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pronóstico Mundial 2026 KLG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070b16;
+    --bg2:#0c1426;
+    --panel:#101a30;
+    --panel2:#16223d;
+    --line:rgba(245,197,24,.14);
+    --line-soft:rgba(255,255,255,.07);
+    --gold:#f5c518;
+    --gold-soft:#ffd96b;
+    --green:#13d97e;
+    --green-deep:#0a8f54;
+    --txt:#eaf0fb;
+    --muted:#8da0bf;
+    --muted2:#5f7396;
+    --danger:#ff5d5d;
+    --silver:#c9d3e3;
+    --bronze:#d49a5a;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Hanken Grotesk',sans-serif;
+    background:
+      radial-gradient(900px 500px at 85% -10%, rgba(245,197,24,.10), transparent 60%),
+      radial-gradient(800px 600px at -10% 20%, rgba(19,217,126,.08), transparent 55%),
+      linear-gradient(180deg,var(--bg),var(--bg2));
+    background-attachment:fixed;
+    color:var(--txt);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.45;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+    background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:100% 46px;
+    mask-image:linear-gradient(180deg,transparent,#000 30%,#000 80%,transparent);
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:18px 16px 80px;position:relative;z-index:1}
+
+  /* HEADER */
+  header.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+  .brand{display:flex;align-items:center;gap:13px;min-width:0}
+  .crest{
+    width:50px;height:50px;flex:none;border-radius:13px;
+    background:linear-gradient(145deg,var(--gold),#c99a07);
+    display:grid;place-items:center;font-size:26px;
+    box-shadow:0 8px 26px rgba(245,197,24,.28), inset 0 1px 0 rgba(255,255,255,.4);
+  }
+  .titles h1{
+    font-family:'Anton',sans-serif;font-weight:400;letter-spacing:.5px;
+    font-size:clamp(22px,5vw,34px);line-height:.95;text-transform:uppercase;
+    background:linear-gradient(180deg,#fff,#cdd9ef);-webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .titles .sub{color:var(--muted);font-size:12.5px;font-weight:500;margin-top:3px}
+  .lang{display:flex;background:var(--panel);border:1px solid var(--line-soft);border-radius:12px;overflow:hidden;flex:none}
+  .lang button{background:none;border:none;color:var(--muted);padding:8px 11px;font:inherit;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:5px}
+  .lang button.on{background:var(--gold);color:#1a1303}
+  .lang button:not(.on):hover{color:var(--txt)}
+
+  /* STAT STRIP */
+  .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:16px 0 18px}
+  .stat{background:linear-gradient(160deg,var(--panel),var(--bg2));border:1px solid var(--line-soft);border-radius:14px;padding:13px 14px;position:relative;overflow:hidden}
+  .stat .k{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted2);font-weight:700}
+  .stat .v{font-family:'Anton',sans-serif;font-size:clamp(20px,4.4vw,30px);margin-top:3px;letter-spacing:.5px}
+  .stat.pool .v{color:var(--gold)}
+  .stat.pool::after{content:"";position:absolute;right:-18px;top:-18px;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,rgba(245,197,24,.25),transparent 70%)}
+  .stat .v small{font-size:13px;color:var(--muted);font-family:'Hanken Grotesk';font-weight:600}
+
+  .btn{font:inherit;font-weight:700;cursor:pointer;border-radius:12px;border:1px solid transparent;padding:12px 18px;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s,box-shadow .2s,background .2s;font-size:14.5px}
+  .btn:active{transform:translateY(1px)}
+  .btn.primary{background:linear-gradient(135deg,var(--gold),#e0ad05);color:#1a1303;box-shadow:0 8px 22px rgba(245,197,24,.30)}
+  .btn.primary:hover{box-shadow:0 10px 30px rgba(245,197,24,.45)}
+  .btn.ghost{background:var(--panel);color:var(--txt);border-color:var(--line-soft)}
+  .btn.ghost:hover{border-color:var(--gold);color:var(--gold-soft)}
+  .btn.green{background:linear-gradient(135deg,var(--green),var(--green-deep));color:#04150c}
+  .btn.danger{background:rgba(255,93,93,.12);color:var(--danger);border-color:rgba(255,93,93,.3)}
+  .btn.sm{padding:8px 12px;font-size:13px;border-radius:10px}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .btn.block{width:100%}
+
+  .barrow{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+  .section-h{font-family:'Anton',sans-serif;font-size:22px;letter-spacing:.6px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+  .section-h .bar{width:5px;height:22px;border-radius:3px;background:linear-gradient(var(--gold),var(--green))}
+
+  /* LEADERBOARD */
+  .board{display:flex;flex-direction:column;gap:9px}
+  .board .head{display:grid;grid-template-columns:48px 1fr 132px 78px;gap:12px;padding:4px 16px;color:var(--muted2);font-size:11px;letter-spacing:.7px;text-transform:uppercase;font-weight:700}
+  .row{
+    background:linear-gradient(160deg,var(--panel),var(--bg2));
+    border:1px solid var(--line-soft);border-radius:var(--radius);
+    overflow:hidden;will-change:transform;
+  }
+  .row .main{display:grid;grid-template-columns:48px 1fr 132px 78px;gap:12px;align-items:center;padding:14px 16px;cursor:pointer}
+  .row.enter{animation:pop .45s cubic-bezier(.2,.9,.25,1.1) both}
+  @keyframes pop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+  .rank{font-family:'Anton',sans-serif;font-size:22px;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--panel2);color:var(--muted);letter-spacing:0}
+  .row.r1 .rank{background:linear-gradient(145deg,var(--gold),#c99a07);color:#1a1303;box-shadow:0 4px 14px rgba(245,197,24,.4)}
+  .row.r2 .rank{background:linear-gradient(145deg,var(--silver),#8d9bb3);color:#10182a}
+  .row.r3 .rank{background:linear-gradient(145deg,var(--bronze),#a06d34);color:#1a1303}
+  .row.leader{border-color:rgba(245,197,24,.55);box-shadow:0 0 0 1px rgba(245,197,24,.25),0 10px 34px rgba(245,197,24,.10)}
+  .pl-name{font-weight:800;font-size:16.5px;display:flex;align-items:center;gap:8px;min-width:0}
+  .pl-name .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .crown{color:var(--gold);font-size:14px;flex:none}
+  .picks{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
+  .pick{display:inline-flex;align-items:center;gap:5px;background:var(--panel2);border:1px solid var(--line-soft);border-radius:999px;padding:3px 9px 3px 7px;font-size:12px;font-weight:700;color:var(--muted)}
+  .pick .fl{font-size:14px;line-height:1}
+  .pick.alive{color:var(--txt);border-color:rgba(19,217,126,.4)}
+  .pick.champ{border-color:var(--gold);color:var(--gold-soft);background:rgba(245,197,24,.10)}
+  .pick .pt{font-family:'Space Mono';font-size:10.5px;opacity:.8}
+  .pts{font-family:'Anton',sans-serif;font-size:30px;text-align:right;letter-spacing:.5px;line-height:1}
+  .pts small{display:block;font-family:'Hanken Grotesk';font-size:10px;color:var(--muted2);letter-spacing:.6px;text-transform:uppercase;font-weight:700;margin-top:1px}
+  .row.leader .pts{color:var(--gold)}
+  .badge{justify-self:end;font-size:11px;font-weight:800;letter-spacing:.4px;padding:6px 11px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+  .badge.paid{background:rgba(19,217,126,.14);color:var(--green);border:1px solid rgba(19,217,126,.35)}
+  .badge.unpaid{background:rgba(255,255,255,.05);color:var(--muted2);border:1px solid var(--line-soft)}
+  /* expand */
+  .row .detail{max-height:0;overflow:hidden;transition:max-height .35s ease}
+  .row.open .detail{max-height:320px}
+  .detail-in{padding:0 16px 16px;border-top:1px solid var(--line-soft);margin-top:0;padding-top:13px}
+  .tline{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;font-size:13px;border-bottom:1px dashed var(--line-soft)}
+  .tline:last-child{border-bottom:none}
+  .tline .nm{display:flex;align-items:center;gap:8px;font-weight:700}
+  .tline .prog{display:flex;gap:4px;align-items:center}
+  .chip{font-size:10px;font-family:'Space Mono';padding:2px 6px;border-radius:6px;background:var(--panel2);color:var(--muted2)}
+  .chip.on{background:rgba(19,217,126,.16);color:var(--green)}
+  .chip.gold{background:rgba(245,197,24,.16);color:var(--gold)}
+  .empty{text-align:center;padding:48px 20px;color:var(--muted);border:1px dashed var(--line-soft);border-radius:var(--radius)}
+  .empty .big{font-size:40px;margin-bottom:8px}
+
+  .note{font-size:12.5px;color:var(--muted2);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+  .dot.stale{background:var(--muted2);box-shadow:none}
+
+  /* tiebreak banner */
+  .tb{margin:14px 0 4px;background:linear-gradient(120deg,rgba(245,197,24,.10),rgba(19,217,126,.06));border:1px solid var(--line);border-radius:14px;padding:13px 16px;font-size:13.5px;display:flex;gap:10px;align-items:flex-start}
+  .tb .ic{font-size:18px;flex:none}
+
+  /* rules */
+  details.rules{margin-top:22px;background:var(--panel);border:1px solid var(--line-soft);border-radius:14px;overflow:hidden}
+  details.rules summary{cursor:pointer;padding:14px 16px;font-weight:800;list-style:none;display:flex;align-items:center;justify-content:space-between}
+  details.rules summary::-webkit-details-marker{display:none}
+  details.rules summary .arr{transition:transform .25s;color:var(--gold)}
+  details.rules[open] summary .arr{transform:rotate(90deg)}
+  .rules-body{padding:2px 16px 18px;color:var(--muted)}
+  .scoretab{width:100%;border-collapse:collapse;margin-top:8px;font-size:13.5px}
+  .scoretab td,.scoretab th{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line-soft)}
+  .scoretab th{color:var(--muted2);text-transform:uppercase;font-size:11px;letter-spacing:.6px}
+  .scoretab td:last-child,.scoretab th:last-child{text-align:right;font-family:'Space Mono';color:var(--gold);font-weight:700}
+
+  /* MODAL */
+  .scrim{position:fixed;inset:0;background:rgba(4,7,14,.78);backdrop-filter:blur(6px);display:none;align-items:flex-start;justify-content:center;padding:24px 14px;z-index:50;overflow:auto}
+  .scrim.show{display:flex}
+  .modal{background:linear-gradient(170deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:20px;width:100%;max-width:640px;box-shadow:0 30px 80px rgba(0,0,0,.6);animation:rise .3s cubic-bezier(.2,.9,.25,1.05) both;margin:auto}
+  @keyframes rise{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:none}}
+  .modal-h{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line-soft)}
+  .modal-h h2{font-family:'Anton',sans-serif;font-size:22px;letter-spacing:.5px;text-transform:uppercase}
+  .x{background:var(--panel2);border:1px solid var(--line-soft);color:var(--muted);width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:18px;line-height:1}
+  .x:hover{color:var(--txt)}
+  .modal-b{padding:18px 20px}
+  label.fld{display:block;font-size:12px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted2);font-weight:700;margin:0 0 6px}
+  input.in,select.in{width:100%;background:var(--bg);border:1px solid var(--line-soft);color:var(--txt);border-radius:11px;padding:12px 13px;font:inherit;font-size:15px}
+  input.in:focus,select.in:focus{outline:none;border-color:var(--gold)}
+  input.in::placeholder{color:var(--muted2)}
+  .pickbar{display:flex;align-items:center;justify-content:space-between;margin:18px 0 8px}
+  .pickbar .cnt{font-family:'Anton',sans-serif;font-size:18px}
+  .pickbar .cnt b{color:var(--gold)}
+  .teamsearch{margin-bottom:10px}
+  .teamgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;max-height:320px;overflow:auto;padding:3px;margin:0 -3px}
+  .teamgrid::-webkit-scrollbar{width:8px}
+  .teamgrid::-webkit-scrollbar-thumb{background:var(--panel2);border-radius:8px}
+  .tbtn{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line-soft);border-radius:11px;padding:10px 11px;cursor:pointer;font:inherit;font-size:13.5px;font-weight:600;color:var(--txt);text-align:left;transition:border .15s,background .15s}
+  .tbtn .fl{font-size:18px;flex:none}
+  .tbtn:hover{border-color:var(--muted2)}
+  .tbtn.sel{border-color:var(--gold);background:rgba(245,197,24,.12);color:var(--gold-soft)}
+  .tbtn.dis{opacity:.4;cursor:not-allowed}
+  .tbtn .ck{margin-left:auto;color:var(--gold);font-weight:800}
+  .warn{font-size:12px;color:var(--bronze);margin-top:10px;display:flex;gap:6px;align-items:flex-start}
+
+  /* ADMIN */
+  .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .acard{background:var(--panel);border:1px solid var(--line-soft);border-radius:14px;padding:15px}
+  .acard h3{font-size:13px;letter-spacing:.6px;text-transform:uppercase;color:var(--gold-soft);margin-bottom:11px;display:flex;align-items:center;gap:7px}
+  .arow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .arow.between{justify-content:space-between}
+  .pay-list{display:flex;flex-direction:column;gap:7px;max-height:230px;overflow:auto;margin:0 -4px;padding:0 4px}
+  .pay-item{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--bg);border:1px solid var(--line-soft);border-radius:10px;padding:9px 11px;font-size:14px}
+  .pay-item .nm{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .toggle{width:46px;height:26px;border-radius:999px;background:var(--panel2);border:1px solid var(--line-soft);position:relative;cursor:pointer;flex:none;transition:background .2s}
+  .toggle::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:var(--muted);transition:.2s}
+  .toggle.on{background:rgba(19,217,126,.3);border-color:rgba(19,217,126,.5)}
+  .toggle.on::after{left:22px;background:var(--green)}
+  .roundsel{margin-bottom:13px}
+  .roundsel .rh{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+  .roundsel .rh .pp{font-family:'Space Mono';color:var(--gold);font-size:11px}
+  .chips{display:flex;flex-wrap:wrap;gap:5px}
+  .tg{font-size:11.5px;font-weight:700;border:1px solid var(--line-soft);background:var(--bg);color:var(--muted);border-radius:999px;padding:4px 9px;cursor:pointer;display:inline-flex;gap:4px;align-items:center}
+  .tg.on{background:rgba(19,217,126,.16);border-color:rgba(19,217,126,.45);color:var(--green)}
+  .tg.gold.on{background:rgba(245,197,24,.16);border-color:var(--gold);color:var(--gold)}
+  .hint{font-size:11.5px;color:var(--muted2);margin-top:4px}
+  .delx{background:none;border:none;color:var(--muted2);cursor:pointer;font-size:15px;padding:2px 6px;border-radius:6px}
+  .delx:hover{color:var(--danger);background:rgba(255,93,93,.1)}
+
+  footer{margin-top:40px;text-align:center;color:var(--muted2);font-size:12px}
+  .keybtn{background:none;border:none;color:var(--muted2);cursor:pointer;font-size:13px;opacity:.5;padding:6px}
+  .keybtn:hover{opacity:1;color:var(--gold)}
+
+  /* toast */
+  #toasts{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:100;display:flex;flex-direction:column;gap:8px;align-items:center;width:calc(100% - 28px);max-width:420px}
+  .toast{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:14px;font-weight:600;box-shadow:0 12px 30px rgba(0,0,0,.5);animation:tin .3s ease both;width:100%}
+  .toast.ok{border-color:rgba(19,217,126,.5)}
+  .toast.err{border-color:rgba(255,93,93,.5);color:#ffd0d0}
+  @keyframes tin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  @media(max-width:680px){
+    .strip{grid-template-columns:1fr 1fr}
+    .board .head{grid-template-columns:38px 1fr 60px;}
+    .board .head .h-status{display:none}
+    .row .main{grid-template-columns:38px 1fr 60px}
+    .row .main .badge{display:none}
+    .pts{font-size:24px}
+    .admin-grid{grid-template-columns:1fr}
+    .rank{font-size:18px;width:32px;height:32px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="crest">🏆</div>
+      <div class="titles">
+        <h1 id="t-title">Pronóstico Mundial 2026 KLG</h1>
+        <div class="sub" id="t-sub"></div>
+      </div>
+    </div>
+    <div class="lang" role="group" aria-label="language">
+      <button data-lang="es"><span>🇪🇸</span> ES</button>
+      <button data-lang="en"><span>🇬🇧</span> EN</button>
+    </div>
+  </header>
+
+  <div class="strip">
+    <div class="stat pool"><div class="k" id="t-pool">Bote</div><div class="v" id="v-pool">€0</div></div>
+    <div class="stat"><div class="k" id="t-players">Jugadores</div><div class="v" id="v-players">0</div></div>
+    <div class="stat"><div class="k" id="t-paid">Pagado</div><div class="v" id="v-paid">0</div></div>
+    <div class="stat"><div class="k" id="t-fee">Entrada</div><div class="v" id="v-fee">€10</div></div>
+  </div>
+
+  <div class="barrow">
+    <div class="section-h"><span class="bar"></span><span id="t-board">Clasificación</span></div>
+    <button class="btn primary" id="btn-join"><span>➕</span><span id="t-join">Apuntarse</span></button>
+  </div>
+
+  <div class="note" style="margin-bottom:12px">
+    <span id="sync-badge"></span><span class="dot" id="upd-dot"></span><span id="upd-text"></span>
+  </div>
+
+  <div id="tiebreak"></div>
+
+  <div class="board" id="board"></div>
+
+  <details class="rules">
+    <summary><span id="t-rules">Cómo funciona</span><span class="arr">▸</span></summary>
+    <div class="rules-body">
+      <p id="t-rules-intro"></p>
+      <table class="scoretab">
+        <thead><tr><th id="t-round">Ronda</th><th id="t-ppts">Puntos por selección que avanza</th></tr></thead>
+        <tbody id="scoretab-body"></tbody>
+      </table>
+      <p style="margin-top:14px;padding:11px 13px;background:rgba(19,217,126,.10);border:1px solid rgba(19,217,126,.32);border-radius:11px;font-weight:700;color:var(--txt)" id="t-rules-pay"></p>
+      <p style="margin-top:12px" id="t-rules-tb"></p>
+      <p style="margin-top:8px;font-size:12px" id="t-rules-note"></p>
+    </div>
+  </details>
+
+  <footer>
+    <div id="t-foot"></div>
+    <button class="keybtn" id="admin-key">🔒 admin</button>
+  </footer>
+</div>
+
+<!-- REGISTRATION MODAL -->
+<div class="scrim" id="reg-scrim">
+  <div class="modal">
+    <div class="modal-h"><h2 id="t-reg-title">Apuntarse a la porra</h2><button class="x" data-close="reg">✕</button></div>
+    <div class="modal-b">
+      <label class="fld" id="t-name-label">Tu nombre completo</label>
+      <input class="in" id="reg-name" placeholder="Nombre y apellido" maxlength="40" autocomplete="off">
+      <div class="pickbar">
+        <label class="fld" style="margin:0" id="t-pick-label">Elige 3 selecciones</label>
+        <div class="cnt"><b id="pick-count">0</b>/3</div>
+      </div>
+      <input class="in teamsearch" id="team-search" placeholder="Buscar selección…" autocomplete="off">
+      <div class="teamgrid" id="team-grid"></div>
+      <div class="warn"><span>⚠️</span><span id="t-lock-warn">Una vez confirmado, tu nombre y selecciones quedan bloqueados. No se pueden cambiar.</span></div>
+      <div class="warn" style="color:var(--green)"><span>💳</span><span id="t-pay-hint"></span></div>
+      <button class="btn primary block" id="reg-submit" style="margin-top:16px" disabled><span id="t-confirm">Confirmar — sin cambios</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN MODAL -->
+<div class="scrim" id="admin-scrim">
+  <div class="modal" style="max-width:760px">
+    <div class="modal-h"><h2 id="t-admin-title">Panel de administración</h2><button class="x" data-close="admin">✕</button></div>
+    <div class="modal-b" id="admin-body"></div>
+  </div>
+</div>
+
+<div id="toasts"></div>
+
+<script>
+"use strict";
+
+/* ======================================================================
+   FIREBASE LIVE SYNC — paste your project's config below.
+   Get it from Firebase console → Project settings → your web app.
+   The databaseURL is the Realtime Database URL (Build → Realtime Database).
+   While these stay empty the app runs LOCAL-ONLY (no sharing across devices).
+   ====================================================================== */
+window.FIREBASE_CONFIG = {
+  apiKey: "AIzaSyA1q0KHezoD-ACeLISKKxlUURkdgsMJyyQ",
+  authDomain: "fifaworldcup2026app.firebaseapp.com",
+  projectId: "fifaworldcup2026app",
+  storageBucket: "fifaworldcup2026app.firebasestorage.app",
+  messagingSenderId: "541096350693",
+  appId: "1:541096350693:web:c61007dc4458914284d50c"
+}
+
+window.POOL_ID = "main"; // change only if you want several separate pools on one project
+
+/* ====================== TEAM DATA — 48 qualified nations (WC 2026) ====================== */
+const TEAMS = [
+  {c:"USA",fl:"🇺🇸",en:"United States",es:"Estados Unidos",a:["united states","usa"]},
+  {c:"MEX",fl:"🇲🇽",en:"Mexico",es:"México",a:["mexico"]},
+  {c:"CAN",fl:"🇨🇦",en:"Canada",es:"Canadá",a:["canada"]},
+  {c:"ARG",fl:"🇦🇷",en:"Argentina",es:"Argentina",a:[]},
+  {c:"BRA",fl:"🇧🇷",en:"Brazil",es:"Brasil",a:[]},
+  {c:"URU",fl:"🇺🇾",en:"Uruguay",es:"Uruguay",a:[]},
+  {c:"COL",fl:"🇨🇴",en:"Colombia",es:"Colombia",a:[]},
+  {c:"ECU",fl:"🇪🇨",en:"Ecuador",es:"Ecuador",a:[]},
+  {c:"PAR",fl:"🇵🇾",en:"Paraguay",es:"Paraguay",a:[]},
+  {c:"ESP",fl:"🇪🇸",en:"Spain",es:"España",a:[]},
+  {c:"FRA",fl:"🇫🇷",en:"France",es:"Francia",a:[]},
+  {c:"ENG",fl:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",en:"England",es:"Inglaterra",a:[]},
+  {c:"GER",fl:"🇩🇪",en:"Germany",es:"Alemania",a:[]},
+  {c:"POR",fl:"🇵🇹",en:"Portugal",es:"Portugal",a:[]},
+  {c:"NED",fl:"🇳🇱",en:"Netherlands",es:"Países Bajos",a:[]},
+  {c:"CRO",fl:"🇭🇷",en:"Croatia",es:"Croacia",a:[]},
+  {c:"BEL",fl:"🇧🇪",en:"Belgium",es:"Bélgica",a:[]},
+  {c:"SUI",fl:"🇨🇭",en:"Switzerland",es:"Suiza",a:[]},
+  {c:"AUT",fl:"🇦🇹",en:"Austria",es:"Austria",a:[]},
+  {c:"SCO",fl:"🏴󠁧󠁢󠁳󠁣󠁴󠁿",en:"Scotland",es:"Escocia",a:[]},
+  {c:"NOR",fl:"🇳🇴",en:"Norway",es:"Noruega",a:[]},
+  {c:"SWE",fl:"🇸🇪",en:"Sweden",es:"Suecia",a:[]},
+  {c:"CZE",fl:"🇨🇿",en:"Czechia",es:"Chequia",a:["czech republic"]},
+  {c:"TUR",fl:"🇹🇷",en:"Türkiye",es:"Turquía",a:["turkey","turkiye"]},
+  {c:"BIH",fl:"🇧🇦",en:"Bosnia & Herzegovina",es:"Bosnia y Herzegovina",a:["bosnia and herzegovina","bosnia"]},
+  {c:"MAR",fl:"🇲🇦",en:"Morocco",es:"Marruecos",a:[]},
+  {c:"SEN",fl:"🇸🇳",en:"Senegal",es:"Senegal",a:[]},
+  {c:"EGY",fl:"🇪🇬",en:"Egypt",es:"Egipto",a:[]},
+  {c:"ALG",fl:"🇩🇿",en:"Algeria",es:"Argelia",a:[]},
+  {c:"TUN",fl:"🇹🇳",en:"Tunisia",es:"Túnez",a:[]},
+  {c:"GHA",fl:"🇬🇭",en:"Ghana",es:"Ghana",a:[]},
+  {c:"CIV",fl:"🇨🇮",en:"Ivory Coast",es:"Costa de Marfil",a:["cote d'ivoire","côte d'ivoire"]},
+  {c:"RSA",fl:"🇿🇦",en:"South Africa",es:"Sudáfrica",a:[]},
+  {c:"CPV",fl:"🇨🇻",en:"Cape Verde",es:"Cabo Verde",a:["cabo verde"]},
+  {c:"COD",fl:"🇨🇩",en:"DR Congo",es:"RD Congo",a:["congo dr","democratic republic of the congo","congo"]},
+  {c:"JPN",fl:"🇯🇵",en:"Japan",es:"Japón",a:[]},
+  {c:"KOR",fl:"🇰🇷",en:"South Korea",es:"Corea del Sur",a:["korea republic","republic of korea"]},
+  {c:"IRN",fl:"🇮🇷",en:"Iran",es:"Irán",a:["iran islamic republic"]},
+  {c:"AUS",fl:"🇦🇺",en:"Australia",es:"Australia",a:[]},
+  {c:"KSA",fl:"🇸🇦",en:"Saudi Arabia",es:"Arabia Saudí",a:[]},
+  {c:"QAT",fl:"🇶🇦",en:"Qatar",es:"Catar",a:[]},
+  {c:"UZB",fl:"🇺🇿",en:"Uzbekistan",es:"Uzbekistán",a:[]},
+  {c:"JOR",fl:"🇯🇴",en:"Jordan",es:"Jordania",a:[]},
+  {c:"IRQ",fl:"🇮🇶",en:"Iraq",es:"Irak",a:[]},
+  {c:"NZL",fl:"🇳🇿",en:"New Zealand",es:"Nueva Zelanda",a:[]},
+  {c:"PAN",fl:"🇵🇦",en:"Panama",es:"Panamá",a:[]},
+  {c:"HAI",fl:"🇭🇹",en:"Haiti",es:"Haití",a:[]},
+  {c:"CUW",fl:"🇨🇼",en:"Curaçao",es:"Curazao",a:["curacao"]}
+];
+const TEAM_BY_CODE = Object.fromEntries(TEAMS.map(t=>[t.c,t]));
+
+/* ====================== SCORING ====================== */
+const POINTS = {r16:1, qf:2, sf:4, final:6, champion:20};
+const ROUND_ORDER = ["r16","qf","sf","final"];
+
+/* ====================== i18n ====================== */
+const I18N = {
+  es:{
+    title:"Pronóstico Mundial 2026 KLG",
+    sub:"Elige 3 selecciones · suma puntos en cada ronda",
+    pool:"Bote", players:"Jugadores", paid:"Pagado", fee:"Entrada",
+    board:"Clasificación", join:"Apuntarse",
+    rules:"Cómo funciona",
+    rulesIntro:"Cada jugador paga la entrada y elige 3 selecciones antes de que empiece el torneo. Ganas puntos cada vez que una de tus selecciones supera una ronda eliminatoria. Cada una de tus 3 selecciones puntúa por separado.",
+    round:"Ronda", ppts:"Puntos por selección que avanza",
+    rulesTb:"Desempate: si hay empate a puntos, gana quien tenga entre sus selecciones al campeón del Mundial. Si sigue el empate, el bote se reparte a partes iguales.",
+    rulesNote:"Nota: el Mundial 2026 tiene 48 equipos y una ronda de Dieciseisavos antes de los Octavos. Esta porra empieza a puntuar en Octavos de final (según tu reglamento). Si quieres puntuar Dieciseisavos, dilo y se añade.",
+    r16:"Octavos de final", qf:"Cuartos de final", sf:"Semifinales", final:"Final (finalista)", champion:"Campeón",
+    rank:"#", player:"Jugador", teams:"Selecciones", points:"Pts", status:"Estado",
+    pts:"pts",
+    paidB:"Pagado", unpaidB:"Pendiente", leader:"Líder",
+    empty:"Aún no hay jugadores. ¡Sé el primero en apuntarte!",
+    foot:"Sin servidor · datos guardados en este navegador · comparte por exportar/importar JSON",
+    regTitle:"Apuntarse a la porra", nameLabel:"Tu nombre completo", namePh:"Nombre y apellido",
+    pickLabel:"Elige 3 selecciones", searchPh:"Buscar selección…",
+    lockWarn:"Una vez confirmado, tu nombre y selecciones quedan bloqueados. No se pueden cambiar.",
+    confirm:"Confirmar — sin cambios",
+    updNever:"Resultados aún sin cargar — el admin marca las rondas o conecta la API.",
+    updManual:"Actualizado manualmente", updApi:"Actualizado vía API", at:"a las",
+    needName:"Escribe tu nombre.", need3:"Elige exactamente 3 selecciones.",
+    dupName:"Ya hay un jugador con ese nombre.",
+    added:"¡Apuntado! Mucha suerte 🍀",
+    tbPending:"Empate en cabeza — se decidirá por el campeón del Mundial (aún sin definir).",
+    tbResolved:"Desempate por el campeón: gana", tbSplit:"Empate — el bote se reparte entre",
+    adminTitle:"Panel de administración", adminWrongPass:"Contraseña incorrecta.",
+    adminPassPrompt:"Contraseña de administración:",
+    aConfig:"Configuración", aFee:"Importe de entrada", aCurrency:"Moneda", aPass:"Contraseña admin",
+    aPayments:"Pagos", aResults:"Resultados (avance por ronda)", aApi:"Datos en directo (API)",
+    aData:"Datos / compartir",
+    aApiKey:"API key football-data.org", aProxy:"Proxy CORS (opcional)",
+    aRefresh:"Actualizar desde API", aExport:"Exportar JSON", aImport:"Importar JSON", aReset:"Reiniciar porra",
+    aChampion:"Campeón del Mundial",
+    aChampionNone:"— sin definir —",
+    aResetConfirm:"¿Seguro? Esto borra TODOS los jugadores, pagos y resultados.",
+    aImported:"Datos importados.", aExported:"JSON descargado.",
+    aApiOk:"Resultados actualizados desde la API.",
+    aApiNoKey:"Introduce primero la API key.",
+    aApiErr:"No se pudo conectar con la API (posible bloqueo CORS). Se mantienen los resultados guardados. Usa un proxy CORS o marca las rondas a mano.",
+    aResetDone:"Porra reiniciada.",
+    aPickHint:"Marca las selecciones que han alcanzado cada ronda. Las rondas inferiores se cuentan solas. El admin no puede cambiar las elecciones de los jugadores.",
+    aDelPlayer:"Eliminar este jugador?",
+    aSaved:"Guardado.",
+    aApiHint:"football-data.org · competición «WC». Si falla por CORS, pega un proxy (p.ej. https://corsproxy.io/?url=) o marca las rondas a mano.",
+    confirmJoin:"¿Confirmar? No podrás cambiar nombre ni selecciones.",
+    rulesPay:"💳 El pago de la entrada se hace por Bizum al 634254258.",
+    payHint:"El pago de la entrada se hace por Bizum al 634254258.",
+    aShare:"Publicar / compartir enlace",
+    aShareBtn:"📋 Copiar enlace",
+    aShareHint:"Copia este enlace y compártelo (WhatsApp, Slack…). Quien lo abra verá esta porra con sus jugadores, pagos y resultados. Vuelve a copiarlo y reenviarlo después de hacer cambios. El enlace funciona una vez publicada la página (GitHub Pages, Netlify…).",
+    aShareCopied:"Enlace copiado al portapapeles.",
+    shareLoaded:"Porra cargada desde el enlace compartido."
+  },
+  en:{
+    title:"Pronóstico Mundial 2026 KLG",
+    sub:"Pick 3 nations · score points every round",
+    pool:"Prize pool", players:"Players", paid:"Paid", fee:"Entry fee",
+    board:"Leaderboard", join:"Join the pool",
+    rules:"How it works",
+    rulesIntro:"Each player pays the entry fee and picks 3 nations before the tournament starts. You earn points every time one of your nations clears a knockout round. All 3 of your picks score independently.",
+    round:"Round", ppts:"Points per nation that advances",
+    rulesTb:"Tiebreaker: if players are tied on points, whoever picked the actual World Cup champion wins. If still tied, the prize pool is split equally.",
+    rulesNote:"Note: the 2026 World Cup has 48 teams and a Round of 32 before the Round of 16. This pool starts scoring at the Round of 16 (per your spec). Want the Round of 32 scored too? Just say so.",
+    r16:"Round of 16", qf:"Quarter-finals", sf:"Semi-finals", final:"Final (runner-up)", champion:"Champion",
+    rank:"#", player:"Player", teams:"Nations", points:"Pts", status:"Status",
+    pts:"pts",
+    paidB:"Paid", unpaidB:"Unpaid", leader:"Leader",
+    empty:"No players yet. Be the first to join!",
+    foot:"No server · data saved in this browser · share via JSON export/import",
+    regTitle:"Join the pool", nameLabel:"Your full name", namePh:"First and last name",
+    pickLabel:"Pick 3 nations", searchPh:"Search nation…",
+    lockWarn:"Once confirmed, your name and picks are locked. They cannot be changed.",
+    confirm:"Confirm — no changes",
+    updNever:"Results not loaded yet — the admin marks rounds or connects the API.",
+    updManual:"Updated manually", updApi:"Updated via API", at:"at",
+    needName:"Enter your name.", need3:"Pick exactly 3 nations.",
+    dupName:"A player with that name already exists.",
+    added:"You're in! Good luck 🍀",
+    tbPending:"Tie at the top — to be decided by the World Cup champion (not yet decided).",
+    tbResolved:"Champion tiebreaker — winner:", tbSplit:"Tied — prize pool split between",
+    adminTitle:"Admin panel", adminWrongPass:"Wrong password.",
+    adminPassPrompt:"Admin password:",
+    aConfig:"Settings", aFee:"Entry fee amount", aCurrency:"Currency", aPass:"Admin password",
+    aPayments:"Payments", aResults:"Results (advancement by round)", aApi:"Live data (API)",
+    aData:"Data / sharing",
+    aApiKey:"football-data.org API key", aProxy:"CORS proxy (optional)",
+    aRefresh:"Refresh from API", aExport:"Export JSON", aImport:"Import JSON", aReset:"Reset pool",
+    aChampion:"World Cup champion",
+    aChampionNone:"— not decided —",
+    aResetConfirm:"Are you sure? This erases ALL players, payments and results.",
+    aImported:"Data imported.", aExported:"JSON downloaded.",
+    aApiOk:"Results updated from the API.",
+    aApiNoKey:"Enter the API key first.",
+    aApiErr:"Couldn't reach the API (likely a CORS block). Saved results kept. Use a CORS proxy or mark rounds manually.",
+    aResetDone:"Pool reset.",
+    aPickHint:"Tick the nations that reached each round. Lower rounds are counted automatically. The admin cannot change players' picks.",
+    aDelPlayer:"Remove this player?",
+    aSaved:"Saved.",
+    aApiHint:"football-data.org · competition \"WC\". If it fails on CORS, paste a proxy (e.g. https://corsproxy.io/?url=) or mark rounds by hand.",
+    confirmJoin:"Confirm? You won't be able to change your name or picks.",
+    rulesPay:"💳 Pay your entry fee via Bizum to 634254258.",
+    payHint:"Pay your entry fee via Bizum to 634254258.",
+    aShare:"Publish / share link",
+    aShareBtn:"📋 Copy link",
+    aShareHint:"Copy this link and share it (WhatsApp, Slack…). Anyone who opens it sees this pool with its players, payments and results. Copy and resend it again after you make changes. The link works once the page is published (GitHub Pages, Netlify…).",
+    aShareCopied:"Link copied to clipboard.",
+    shareLoaded:"Pool loaded from the shared link."
+  }
+};
+
+/* ====================== STATE ====================== */
+const STORAGE_KEY = "wcpool_state_v1";
+function defaultState(){
+  return {
+    config:{lang:"es", fee:10, currency:"€", apiKey:"", proxy:"", adminPass:"porra2026"},
+    players:[], // {id,name,picks:[c,c,c],paid,createdAt}
+    results:{r16:[],qf:[],sf:[],final:[],champion:null,lastUpdated:null,source:null}
+  };
+}
+let state = load();
+function load(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultState();
+    const s = JSON.parse(raw);
+    const d = defaultState();
+    return {config:{...d.config,...(s.config||{})}, players:s.players||[], results:{...d.results,...(s.results||{})}};
+  }catch(e){ return defaultState(); }
+}
+function save(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){ toast("⚠️ storage", "err"); } }
+
+/* ---- live-sync push helpers (no-op unless Firebase is configured) ---- */
+function syncOn(){ return !!(window.WCSync && window.WCSync.enabled); }
+function pushPlayer(p){ if(syncOn()) window.WCSync.writePlayer(p); }
+function pushPaid(id,paid){ if(syncOn()) window.WCSync.setPaid(id,paid); }
+function pushRemove(id){ if(syncOn()) window.WCSync.removePlayer(id); }
+function pushResults(){ if(syncOn()) window.WCSync.writeResults(state.results); }
+function pushConfig(){ if(syncOn()) window.WCSync.writeConfig({fee:Number(state.config.fee)||0, currency:state.config.currency||"€"}); }
+function pushAll(){ if(!syncOn()) return; state.players.forEach(p=>window.WCSync.writePlayer(p)); pushResults(); pushConfig(); }
+function clearRemote(){ if(syncOn() && window.WCSync.clearAll) window.WCSync.clearAll(); }
+
+/* called by the Firebase module whenever shared data changes */
+window.applyRemoteState = function(remote){
+  remote = remote || {};
+  const d = defaultState();
+  const pmap = remote.players || {};
+  state.players = Object.keys(pmap).map(id=>({id, ...pmap[id]})).filter(p=>p && Array.isArray(p.picks));
+  state.results = {...d.results, ...(remote.results||{})};
+  if(remote.config){
+    if(remote.config.fee!=null) state.config.fee = remote.config.fee;
+    if(remote.config.currency) state.config.currency = remote.config.currency;
+  }
+  save();
+  renderAll();
+  const aScrim=document.getElementById("admin-scrim");
+  if(aScrim && aScrim.classList.contains("show")) renderAdmin();
+};
+window.onSyncReady = function(){ renderUpdated(); };
+function L(){ return I18N[state.config.lang] || I18N.es; }
+function tname(code){ const t=TEAM_BY_CODE[code]; return t? t[state.config.lang] : code; }
+function tflag(code){ const t=TEAM_BY_CODE[code]; return t? t.fl : "🏳️"; }
+
+/* ====================== SCORING ENGINE ====================== */
+// effective "reached" sets with cascade: champion ⊆ final ⊆ sf ⊆ qf ⊆ r16
+function effectiveResults(){
+  const r = state.results;
+  const finalSet = new Set([...(r.final||[]), ...(r.champion?[r.champion]:[])]);
+  const sfSet  = new Set([...(r.sf||[]), ...finalSet]);
+  const qfSet  = new Set([...(r.qf||[]), ...sfSet]);
+  const r16Set = new Set([...(r.r16||[]), ...qfSet]);
+  return {r16:r16Set, qf:qfSet, sf:sfSet, final:finalSet, champion:r.champion};
+}
+function teamBreakdown(code, eff){
+  const reached = {
+    r16: eff.r16.has(code), qf: eff.qf.has(code), sf: eff.sf.has(code),
+    final: eff.final.has(code), champion: eff.champion===code
+  };
+  let pts=0;
+  if(reached.r16) pts+=POINTS.r16;
+  if(reached.qf) pts+=POINTS.qf;
+  if(reached.sf) pts+=POINTS.sf;
+  if(reached.final) pts+=POINTS.final;
+  if(reached.champion) pts+=POINTS.champion;
+  return {reached, pts};
+}
+function playerScore(p, eff){
+  let total=0; const parts=[];
+  p.picks.forEach(c=>{ const b=teamBreakdown(c,eff); total+=b.pts; parts.push({code:c, ...b}); });
+  const hasChampion = eff.champion ? p.picks.includes(eff.champion) : false;
+  return {total, parts, hasChampion};
+}
+function rankPlayers(){
+  const eff = effectiveResults();
+  const arr = state.players.map(p=>({p, ...playerScore(p,eff)}));
+  arr.sort((a,b)=> b.total-a.total || (b.hasChampion-a.hasChampion) || a.p.name.localeCompare(b.p.name));
+  return {arr, eff};
+}
+
+/* ====================== RENDER ====================== */
+function fmtMoney(n){ const c=state.config.currency||"€"; return c==="€"? c+n : c+" "+n; }
+
+function renderStatic(){
+  const t=L();
+  document.documentElement.lang = state.config.lang;
+  document.getElementById("t-title").textContent=t.title;
+  document.getElementById("t-sub").textContent=t.sub;
+  document.getElementById("t-pool").textContent=t.pool;
+  document.getElementById("t-players").textContent=t.players;
+  document.getElementById("t-paid").textContent=t.paid;
+  document.getElementById("t-fee").textContent=t.fee;
+  document.getElementById("t-board").textContent=t.board;
+  document.getElementById("t-join").textContent=t.join;
+  document.getElementById("t-rules").textContent=t.rules;
+  document.getElementById("t-rules-intro").textContent=t.rulesIntro;
+  document.getElementById("t-round").textContent=t.round;
+  document.getElementById("t-ppts").textContent=t.ppts;
+  document.getElementById("t-rules-tb").textContent=t.rulesTb;
+  document.getElementById("t-rules-note").textContent=t.rulesNote;
+  document.getElementById("t-rules-pay").textContent=t.rulesPay;
+  document.getElementById("t-pay-hint").textContent=t.payHint;
+  document.getElementById("t-foot").textContent=t.foot;
+  // reg modal labels
+  document.getElementById("t-reg-title").textContent=t.regTitle;
+  document.getElementById("t-name-label").textContent=t.nameLabel;
+  document.getElementById("reg-name").placeholder=t.namePh;
+  document.getElementById("t-pick-label").textContent=t.pickLabel;
+  document.getElementById("team-search").placeholder=t.searchPh;
+  document.getElementById("t-lock-warn").textContent=t.lockWarn;
+  document.getElementById("t-confirm").textContent=t.confirm;
+  document.getElementById("t-admin-title").textContent=t.adminTitle;
+  // lang buttons
+  document.querySelectorAll(".lang button").forEach(b=>b.classList.toggle("on", b.dataset.lang===state.config.lang));
+  // score table
+  const rows=[["r16",POINTS.r16],["qf",POINTS.qf],["sf",POINTS.sf],["final",POINTS.final],["champion",POINTS.champion]];
+  document.getElementById("scoretab-body").innerHTML = rows.map(([k,v])=>
+    `<tr><td>${t[k]}</td><td>+${v}</td></tr>`).join("");
+}
+
+function renderStrip(){
+  const paid = state.players.filter(p=>p.paid).length;
+  document.getElementById("v-pool").innerHTML = fmtMoney(paid*Number(state.config.fee||0))+` <small>· ${paid} ${L().paid.toLowerCase()}</small>`;
+  document.getElementById("v-players").textContent = state.players.length;
+  document.getElementById("v-paid").textContent = paid;
+  document.getElementById("v-fee").textContent = fmtMoney(Number(state.config.fee||0));
+}
+
+function renderUpdated(){
+  const t=L(), r=state.results, el=document.getElementById("upd-text"), dot=document.getElementById("upd-dot");
+  const sb=document.getElementById("sync-badge");
+  if(sb){ sb.innerHTML = (window.WCSync&&window.WCSync.enabled) ? '<span style="color:var(--green);font-weight:800">🟢 '+(state.config.lang==="es"?"En directo":"Live")+'</span> · ' : ""; }
+  if(!r.lastUpdated){ el.textContent=t.updNever; dot.classList.add("stale"); return; }
+  dot.classList.remove("stale");
+  const d=new Date(r.lastUpdated);
+  const when = d.toLocaleDateString(state.config.lang,{day:"2-digit",month:"short"})+" "+t.at+" "+d.toLocaleTimeString(state.config.lang,{hour:"2-digit",minute:"2-digit"});
+  el.textContent = (r.source==="api"? t.updApi : t.updManual)+" — "+when;
+}
+
+function pickPillHTML(part, eff){
+  let cls="pick"; let lbl="";
+  if(part.reached.champion){ cls+=" champ"; lbl="👑"; }
+  else if(part.pts>0){ cls+=" alive"; }
+  return `<span class="${cls}" title="${tname(part.code)} · ${part.pts} ${L().pts}">
+    <span class="fl">${tflag(part.code)}</span>${part.code}${part.pts>0?`<span class="pt">+${part.pts}</span>`:""}${lbl}</span>`;
+}
+
+function rowHTML(entry, idx, leaders){
+  const {p,total,parts,hasChampion}=entry;
+  const eff=effectiveResults();
+  const isLeader = leaders.has(p.id);
+  const rankClass = idx===0?"r1":idx===1?"r2":idx===2?"r3":"";
+  const t=L();
+  const detail = parts.map(pt=>{
+    const chips = ROUND_ORDER.map(rk=>`<span class="chip ${pt.reached[rk]?'on':''}">${t[rk].split(" ")[0]}</span>`).join("")
+      + `<span class="chip gold ${pt.reached.champion?'on':''}">👑</span>`;
+    return `<div class="tline"><span class="nm"><span class="fl" style="font-size:18px">${tflag(pt.code)}</span>${tname(pt.code)}</span>
+      <span class="prog">${chips}<span class="chip" style="background:var(--gold);color:#1a1303;font-weight:700">+${pt.pts}</span></span></div>`;
+  }).join("");
+  return `<div class="row ${rankClass} ${isLeader?'leader':''}" data-pid="${p.id}">
+    <div class="main">
+      <div class="rank">${idx+1}</div>
+      <div>
+        <div class="pl-name">${isLeader?'<span class="crown">👑</span>':''}<span class="nm">${escapeHtml(p.name)}</span></div>
+        <div class="picks">${parts.map(pt=>pickPillHTML(pt,eff)).join("")}</div>
+      </div>
+      <div class="pts">${total}<small>${t.pts}</small></div>
+      <div class="badge ${p.paid?'paid':'unpaid'}">${p.paid?t.paidB:t.unpaidB}</div>
+    </div>
+    <div class="detail"><div class="detail-in">${detail}</div></div>
+  </div>`;
+}
+
+function renderBoard(){
+  const board=document.getElementById("board");
+  const t=L();
+  // FLIP: capture old positions
+  const oldPos={};
+  [...board.children].forEach(ch=>{ if(ch.dataset.pid) oldPos[ch.dataset.pid]=ch.getBoundingClientRect().top; });
+  const openSet=new Set([...board.querySelectorAll(".row.open")].map(r=>r.dataset.pid));
+
+  const {arr}=rankPlayers();
+  // header
+  const header=`<div class="head"><div>${t.rank}</div><div>${t.player}</div><div style="text-align:right">${t.points}</div><div class="h-status" style="text-align:right">${t.status}</div></div>`;
+
+  if(arr.length===0){
+    board.innerHTML = header + `<div class="empty"><div class="big">⚽</div>${t.empty}</div>`;
+  }else{
+    // leaders = those tied at max points
+    const max = arr[0].total;
+    const leaders = new Set(arr.filter(e=>e.total===max && max>0).map(e=>e.p.id));
+    board.innerHTML = header + arr.map((e,i)=>rowHTML(e,i,leaders)).join("");
+    // restore open + FLIP animate
+    [...board.querySelectorAll(".row")].forEach(ch=>{
+      const pid=ch.dataset.pid;
+      if(openSet.has(pid)) ch.classList.add("open");
+      if(oldPos[pid]!==undefined){
+        const delta=oldPos[pid]-ch.getBoundingClientRect().top;
+        if(Math.abs(delta)>1){
+          ch.style.transition="none"; ch.style.transform=`translateY(${delta}px)`;
+          requestAnimationFrame(()=>{ ch.style.transition="transform .55s cubic-bezier(.2,.85,.25,1)"; ch.style.transform=""; });
+        }
+      }else{ ch.classList.add("enter"); }
+    });
+  }
+  renderTiebreak(arr);
+}
+
+function renderTiebreak(arr){
+  const box=document.getElementById("tiebreak"); const t=L();
+  box.innerHTML="";
+  if(arr.length<2) return;
+  const max=arr[0].total;
+  if(max===0) return;
+  const top=arr.filter(e=>e.total===max);
+  if(top.length<2) return; // single leader, no tie
+  const champ=state.results.champion;
+  let msg, ic="🤝";
+  if(!champ){ msg=t.tbPending; ic="⏳"; }
+  else{
+    const withChamp=top.filter(e=>e.hasChampion);
+    if(withChamp.length===1){ msg=`${t.tbResolved} ${escapeHtml(withChamp[0].p.name)} 🏆`; ic="🏆"; }
+    else{
+      const grp=(withChamp.length>1?withChamp:top).map(e=>escapeHtml(e.p.name)).join(", ");
+      msg=`${t.tbSplit} ${grp}`; ic="🤝";
+    }
+  }
+  box.innerHTML=`<div class="tb"><span class="ic">${ic}</span><span>${msg}</span></div>`;
+}
+
+function renderAll(){ renderStatic(); renderStrip(); renderUpdated(); renderBoard(); }
+
+/* ====================== REGISTRATION ====================== */
+let regPicks=[];
+function openReg(){
+  regPicks=[]; document.getElementById("reg-name").value="";
+  document.getElementById("team-search").value="";
+  buildTeamGrid(""); updateRegState();
+  showScrim("reg");
+}
+function buildTeamGrid(filter){
+  const grid=document.getElementById("team-grid");
+  const f=norm(filter);
+  const list=[...TEAMS].sort((a,b)=>tname(a.c).localeCompare(tname(b.c)))
+    .filter(tm=> !f || norm(tname(tm.c)).includes(f) || tm.c.toLowerCase().includes(f));
+  grid.innerHTML=list.map(tm=>{
+    const sel=regPicks.includes(tm.c);
+    const dis=!sel && regPicks.length>=3;
+    return `<button class="tbtn ${sel?'sel':''} ${dis?'dis':''}" data-code="${tm.c}" ${dis?'disabled':''}>
+      <span class="fl">${tm.fl}</span><span>${tname(tm.c)}</span>${sel?'<span class="ck">✓</span>':''}</button>`;
+  }).join("");
+}
+function updateRegState(){
+  document.getElementById("pick-count").textContent=regPicks.length;
+  const name=document.getElementById("reg-name").value.trim();
+  document.getElementById("reg-submit").disabled = !(name.length>0 && regPicks.length===3);
+}
+function submitReg(){
+  const t=L();
+  const name=document.getElementById("reg-name").value.trim();
+  if(!name){ toast(t.needName,"err"); return; }
+  if(regPicks.length!==3){ toast(t.need3,"err"); return; }
+  if(state.players.some(p=>norm(p.name)===norm(name))){ toast(t.dupName,"err"); return; }
+  if(!confirm(t.confirmJoin)) return;
+  const np={id:"p"+Date.now().toString(36)+Math.random().toString(36).slice(2,6), name, picks:[...regPicks], paid:false, createdAt:Date.now()};
+  state.players.push(np);
+  save(); pushPlayer(np); hideScrim("reg"); renderStrip(); renderBoard(); toast(t.added,"ok");
+}
+
+/* ====================== ADMIN ====================== */
+function openAdmin(){ renderAdmin(); showScrim("admin"); }
+function renderAdmin(){
+  const t=L(), c=state.config;
+  const teamChips=(round)=> [...TEAMS].sort((a,b)=>tname(a.c).localeCompare(tname(b.c))).map(tm=>{
+    const on=(state.results[round]||[]).includes(tm.c);
+    return `<button class="tg ${on?'on':''}" data-round="${round}" data-code="${tm.c}"><span>${tm.fl}</span>${tm.c}</button>`;
+  }).join("");
+  const champOpts = `<option value="">${t.aChampionNone}</option>` + [...TEAMS].sort((a,b)=>tname(a.c).localeCompare(tname(b.c)))
+    .map(tm=>`<option value="${tm.c}" ${state.results.champion===tm.c?'selected':''}>${tm.fl} ${tname(tm.c)}</option>`).join("");
+
+  const payList = state.players.length? state.players.map(p=>`
+    <div class="pay-item">
+      <span class="nm">${escapeHtml(p.name)}</span>
+      <div class="arow">
+        <span class="toggle ${p.paid?'on':''}" data-pay="${p.id}" role="button" aria-label="toggle paid"></span>
+        <button class="delx" data-del="${p.id}" title="delete">🗑</button>
+      </div>
+    </div>`).join("") : `<div class="hint">${t.empty}</div>`;
+
+  document.getElementById("admin-body").innerHTML = `
+    <div class="admin-grid">
+      <div class="acard">
+        <h3>⚙️ ${t.aConfig}</h3>
+        <label class="fld">${t.aFee}</label>
+        <input class="in" id="ad-fee" type="number" min="0" step="1" value="${c.fee}">
+        <label class="fld" style="margin-top:10px">${t.aCurrency}</label>
+        <input class="in" id="ad-cur" value="${escapeAttr(c.currency)}" maxlength="4">
+        <label class="fld" style="margin-top:10px">${t.aPass}</label>
+        <input class="in" id="ad-pass" value="${escapeAttr(c.adminPass)}">
+        <button class="btn green sm block" id="ad-savecfg" style="margin-top:12px">💾 ${t.aSaved.replace('.','')}</button>
+      </div>
+
+      <div class="acard">
+        <h3>💶 ${t.aPayments}</h3>
+        <div class="pay-list">${payList}</div>
+      </div>
+
+      <div class="acard" style="grid-column:1/-1">
+        <h3>🏟️ ${t.aResults}</h3>
+        <div class="hint" style="margin-bottom:10px">${t.aPickHint}</div>
+        <div class="roundsel"><div class="rh"><span>${t.r16}</span><span class="pp">+${POINTS.r16}</span></div><div class="chips">${teamChips("r16")}</div></div>
+        <div class="roundsel"><div class="rh"><span>${t.qf}</span><span class="pp">+${POINTS.qf}</span></div><div class="chips">${teamChips("qf")}</div></div>
+        <div class="roundsel"><div class="rh"><span>${t.sf}</span><span class="pp">+${POINTS.sf}</span></div><div class="chips">${teamChips("sf")}</div></div>
+        <div class="roundsel"><div class="rh"><span>${t.final}</span><span class="pp">+${POINTS.final}</span></div><div class="chips">${teamChips("final")}</div></div>
+        <label class="fld" style="margin-top:6px">👑 ${t.aChampion} <span style="color:var(--gold)">+${POINTS.champion}</span></label>
+        <select class="in" id="ad-champ">${champOpts}</select>
+      </div>
+
+      <div class="acard">
+        <h3>📡 ${t.aApi}</h3>
+        <label class="fld">${t.aApiKey}</label>
+        <input class="in" id="ad-apikey" value="${escapeAttr(c.apiKey)}" placeholder="xxxxxxxx">
+        <label class="fld" style="margin-top:10px">${t.aProxy}</label>
+        <input class="in" id="ad-proxy" value="${escapeAttr(c.proxy)}" placeholder="https://corsproxy.io/?url=">
+        <div class="hint" style="margin:8px 0 12px">${t.aApiHint}</div>
+        <button class="btn ghost sm block" id="ad-refresh">🔄 ${t.aRefresh}</button>
+      </div>
+
+      <div class="acard">
+        <h3>🗂️ ${t.aData}</h3>
+        <button class="btn ghost sm block" id="ad-export" style="margin-bottom:8px">⬇️ ${t.aExport}</button>
+        <button class="btn ghost sm block" id="ad-import" style="margin-bottom:8px">⬆️ ${t.aImport}</button>
+        <input type="file" id="ad-file" accept="application/json,.json" style="display:none">
+        <button class="btn danger sm block" id="ad-reset">🧹 ${t.aReset}</button>
+      </div>
+
+      <div class="acard" style="grid-column:1/-1">
+        <h3>🔗 ${t.aShare}</h3>
+        <div class="arow" style="gap:8px;flex-wrap:nowrap">
+          <input class="in" id="ad-sharelink" readonly value="${escapeAttr(shareURL())}" style="flex:1;min-width:0;font-size:12px">
+          <button class="btn green sm" id="ad-sharebtn" style="white-space:nowrap;flex:none">${t.aShareBtn}</button>
+        </div>
+        <div class="hint" style="margin-top:8px">${t.aShareHint}</div>
+      </div>
+    </div>`;
+
+  // wire admin controls
+  document.getElementById("ad-savecfg").onclick=()=>{
+    state.config.fee = Math.max(0, Number(document.getElementById("ad-fee").value)||0);
+    state.config.currency = document.getElementById("ad-cur").value.trim()||"€";
+    state.config.adminPass = document.getElementById("ad-pass").value||"porra2026";
+    save(); pushConfig(); renderStrip(); toast(L().aSaved,"ok");
+  };
+  document.getElementById("ad-champ").onchange=(e)=>{
+    state.results.champion = e.target.value||null;
+    if(state.results.champion && !(state.results.final||[]).includes(state.results.champion)){
+      state.results.final=[...new Set([...(state.results.final||[]),state.results.champion])];
+    }
+    stampManual(); save(); pushResults(); renderAdmin(); renderBoard(); renderUpdated();
+  };
+  document.getElementById("ad-refresh").onclick=apiRefresh;
+  document.getElementById("ad-export").onclick=exportJSON;
+  document.getElementById("ad-import").onclick=()=>document.getElementById("ad-file").click();
+  document.getElementById("ad-file").onchange=importJSON;
+  document.getElementById("ad-reset").onclick=()=>{
+    if(confirm(L().aResetConfirm)){ clearRemote(); state=defaultState(); save(); renderAll(); renderAdmin(); toast(L().aResetDone,"ok"); }
+  };
+  const shareInp=document.getElementById("ad-sharelink");
+  if(shareInp) shareInp.onclick=()=>{ shareInp.value=shareURL(); shareInp.select(); };
+  document.getElementById("ad-sharebtn").onclick=copyShare;
+}
+function stampManual(){ state.results.lastUpdated=Date.now(); state.results.source="manual"; }
+
+/* admin delegated clicks (payments, round chips, delete) */
+document.getElementById("admin-body").addEventListener("click",(e)=>{
+  const pay=e.target.closest("[data-pay]");
+  if(pay){ const id=pay.dataset.pay; const pl=state.players.find(p=>p.id===id); if(pl){ pl.paid=!pl.paid; save(); pushPaid(id,pl.paid); pay.classList.toggle("on",pl.paid); renderStrip(); renderBoard(); } return; }
+  const del=e.target.closest("[data-del]");
+  if(del){ const id=del.dataset.del; if(confirm(L().aDelPlayer)){ state.players=state.players.filter(p=>p.id!==id); save(); pushRemove(id); renderAdmin(); renderStrip(); renderBoard(); } return; }
+  const tg=e.target.closest(".tg");
+  if(tg){
+    const round=tg.dataset.round, code=tg.dataset.code;
+    const set=new Set(state.results[round]||[]);
+    if(set.has(code)) set.delete(code); else set.add(code);
+    state.results[round]=[...set];
+    stampManual(); save(); pushResults(); tg.classList.toggle("on"); renderBoard(); renderUpdated(); return;
+  }
+});
+
+/* ====================== DATA EXPORT / IMPORT ====================== */
+function exportJSON(){
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob); const a=document.createElement("a");
+  a.href=url; a.download=`pronostico-mundial-2026-klg-${new Date().toISOString().slice(0,10)}.json`;
+  a.click(); URL.revokeObjectURL(url); toast(L().aExported,"ok");
+}
+function importJSON(e){
+  const file=e.target.files[0]; if(!file) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const s=JSON.parse(r.result); const d=defaultState();
+      if(!s.players||!Array.isArray(s.players)) throw new Error("bad");
+      state={config:{...d.config,...(s.config||{})}, players:s.players, results:{...d.results,...(s.results||{})}};
+      save(); pushAll(); renderAll(); renderAdmin(); toast(L().aImported,"ok");
+    }catch(err){ toast("⚠️ JSON","err"); }
+  };
+  r.readAsText(file); e.target.value="";
+}
+
+/* ====================== LIVE API (football-data.org) ====================== */
+async function apiRefresh(){
+  const t=L(), c=state.config;
+  if(!c.apiKey){ toast(t.aApiNoKey,"err"); return; }
+  const btn=document.getElementById("ad-refresh"); if(btn){ btn.disabled=true; btn.textContent="…"; }
+  const base="https://api.football-data.org/v4/competitions/WC/matches";
+  const url = c.proxy ? c.proxy+encodeURIComponent(base) : base;
+  try{
+    const res=await fetch(url,{headers:{"X-Auth-Token":c.apiKey}});
+    if(!res.ok) throw new Error("http "+res.status);
+    const data=await res.json();
+    const matches=data.matches||[];
+    const buckets={LAST_16:new Set(),QUARTER_FINALS:new Set(),SEMI_FINALS:new Set(),FINAL:new Set()};
+    let champ=null;
+    matches.forEach(m=>{
+      const stage=m.stage; if(!buckets[stage]) return;
+      const h=matchCode(m.homeTeam), aw=matchCode(m.awayTeam);
+      if(h) buckets[stage].add(h); if(aw) buckets[stage].add(aw);
+      if(stage==="FINAL" && m.status==="FINISHED" && m.score && m.score.winner){
+        if(m.score.winner==="HOME_TEAM") champ=h; else if(m.score.winner==="AWAY_TEAM") champ=aw;
+      }
+    });
+    state.results.r16=[...buckets.LAST_16];
+    state.results.qf=[...buckets.QUARTER_FINALS];
+    state.results.sf=[...buckets.SEMI_FINALS];
+    state.results.final=[...buckets.FINAL];
+    state.results.champion=champ;
+    state.results.lastUpdated=Date.now(); state.results.source="api";
+    save(); pushResults(); renderAll(); renderAdmin(); toast(t.aApiOk,"ok");
+  }catch(err){
+    toast(t.aApiErr,"err");
+  }finally{
+    if(btn){ btn.disabled=false; btn.textContent="🔄 "+t.aRefresh; }
+  }
+}
+function matchCode(teamObj){
+  if(!teamObj||!teamObj.name) return null;
+  const n=norm(teamObj.name);
+  for(const tm of TEAMS){
+    if(norm(tm.en)===n) return tm.c;
+    if(tm.a.some(al=>norm(al)===n)) return tm.c;
+  }
+  // loose contains fallback
+  for(const tm of TEAMS){ if(norm(tm.en).includes(n)||n.includes(norm(tm.en))) return tm.c; }
+  return null;
+}
+
+/* ====================== SHARE VIA URL ====================== */
+// Encodes the whole pool into the URL hash so a single link carries everything.
+function shareURL(){
+  try{
+    const enc=encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(state)))));
+    const origin = (location.origin && location.origin!=="null") ? location.origin : "";
+    return origin+location.pathname+"#d="+enc;
+  }catch(e){ return location.href; }
+}
+function copyShare(){
+  const url=shareURL();
+  const inp=document.getElementById("ad-sharelink");
+  if(inp){ inp.value=url; inp.focus(); inp.select(); }
+  const done=()=>toast(L().aShareCopied,"ok");
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(done).catch(()=>{ try{document.execCommand("copy");done();}catch(e){} });
+  }else{ try{document.execCommand("copy");done();}catch(e){} }
+}
+function loadFromHash(){
+  const m=location.hash.match(/[#&]d=([^&]+)/); if(!m) return false;
+  try{
+    const json=decodeURIComponent(escape(atob(decodeURIComponent(m[1]))));
+    const s=JSON.parse(json); const d=defaultState();
+    if(!s.players||!Array.isArray(s.players)) return false;
+    state={config:{...d.config,...(s.config||{})}, players:s.players, results:{...d.results,...(s.results||{})}};
+    save();
+    history.replaceState(null,"",location.pathname+location.search);
+    return true;
+  }catch(e){ return false; }
+}
+
+/* ====================== UTILITIES ====================== */
+function norm(s){ return (s||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim(); }
+function escapeHtml(s){ return (s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
+function escapeAttr(s){ return escapeHtml(s); }
+function showScrim(id){ document.getElementById(id+"-scrim").classList.add("show"); }
+function hideScrim(id){ document.getElementById(id+"-scrim").classList.remove("show"); }
+function toast(msg,kind){
+  const wrap=document.getElementById("toasts");
+  const el=document.createElement("div"); el.className="toast "+(kind||""); el.textContent=msg;
+  wrap.appendChild(el);
+  setTimeout(()=>{ el.style.transition="opacity .3s,transform .3s"; el.style.opacity="0"; el.style.transform="translateY(10px)"; setTimeout(()=>el.remove(),300); },3200);
+}
+
+/* ====================== EVENTS ====================== */
+document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>{ state.config.lang=b.dataset.lang; save(); renderAll(); });
+document.getElementById("btn-join").onclick=openReg;
+document.getElementById("reg-name").addEventListener("input",updateRegState);
+document.getElementById("team-search").addEventListener("input",e=>buildTeamGrid(e.target.value));
+document.getElementById("team-grid").addEventListener("click",e=>{
+  const b=e.target.closest(".tbtn"); if(!b||b.disabled) return;
+  const code=b.dataset.code; const i=regPicks.indexOf(code);
+  if(i>=0) regPicks.splice(i,1); else if(regPicks.length<3) regPicks.push(code);
+  buildTeamGrid(document.getElementById("team-search").value); updateRegState();
+});
+document.getElementById("reg-submit").onclick=submitReg;
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>hideScrim(b.dataset.close));
+document.querySelectorAll(".scrim").forEach(s=>s.addEventListener("click",e=>{ if(e.target===s) s.classList.remove("show"); }));
+// leaderboard expand
+document.getElementById("board").addEventListener("click",e=>{
+  const row=e.target.closest(".row"); if(!row) return; row.classList.toggle("open");
+});
+// admin entry
+document.getElementById("admin-key").onclick=()=>{
+  const pass=prompt(L().adminPassPrompt);
+  if(pass===null) return;
+  if(pass===state.config.adminPass) openAdmin(); else toast(L().adminWrongPass,"err");
+};
+
+/* ====================== INIT ====================== */
+function init(){
+  const fromHash=loadFromHash();
+  renderAll();
+  if(fromHash) toast(L().shareLoaded,"ok");
+  const params=new URLSearchParams(location.search);
+  if(params.get("admin")==="true") openAdmin();
+}
+init();
+</script>
+
+<script type="module">
+  /* Firebase live sync. Runs only if window.FIREBASE_CONFIG is filled in. */
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js';
+  import { getDatabase, ref, set, update, remove, onValue } from 'https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js';
+  const cfg = window.FIREBASE_CONFIG || {};
+  if(cfg.databaseURL && cfg.apiKey){
+    try{
+      const app = initializeApp(cfg);
+      const db = getDatabase(app);
+      const POOL = "pool/" + (window.POOL_ID || "main");
+      window.WCSync = {
+        enabled: true,
+        writePlayer(p){ const {id, ...rest} = p; return set(ref(db, POOL+"/players/"+id), rest); },
+        setPaid(id, paid){ return update(ref(db, POOL+"/players/"+id), {paid: !!paid}); },
+        removePlayer(id){ return remove(ref(db, POOL+"/players/"+id)); },
+        writeResults(r){ return set(ref(db, POOL+"/results"), r); },
+        writeConfig(c){ return set(ref(db, POOL+"/config"), c); },
+        clearAll(){ return remove(ref(db, POOL)); }
+      };
+      onValue(ref(db, POOL), (snap)=>{ if(window.applyRemoteState) window.applyRemoteState(snap.val()); });
+      if(window.onSyncReady) window.onSyncReady();
+    }catch(e){ console.error("Firebase init failed:", e); }
+  }
+</script>
+</body>
+</html>

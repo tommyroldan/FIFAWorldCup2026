@@ -331,15 +331,14 @@
    While these stay empty the app runs LOCAL-ONLY (no sharing across devices).
    ====================================================================== */
 window.FIREBASE_CONFIG = {
-  databaseURL: "https://fifaworldcup2026app-default-rtdb.europe-west1.firebasedatabase.app",   
-  apiKey: "AIzaSyA1q0KHezoD-ACeLISKKxlUURkdgsMJyyQ",
+apiKey: "AIzaSyA1q0KHezoD-ACeLISKKxlUURkdgsMJyyQ",
   authDomain: "fifaworldcup2026app.firebaseapp.com",
+  databaseURL: "https://fifaworldcup2026app-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "fifaworldcup2026app",
   storageBucket: "fifaworldcup2026app.firebasestorage.app",
   messagingSenderId: "541096350693",
-  appId: "1:541096350693:web:c61007dc4458914284d50c"
-}
-
+  appId: "1:541096350693:web:14dbaeacb9e779c584d50c"
+};
 window.POOL_ID = "main"; // change only if you want several separate pools on one project
 
 /* ====================== TEAM DATA — 48 qualified nations (WC 2026) ====================== */
@@ -396,7 +395,7 @@ const TEAMS = [
 const TEAM_BY_CODE = Object.fromEntries(TEAMS.map(t=>[t.c,t]));
 
 /* ====================== SCORING ====================== */
-const POINTS = {r16:1, qf:2, sf:4, final:6, champion:20};
+const POINTS = {r16:1, qf:2, sf:4, final:6, champion:50};
 const ROUND_ORDER = ["r16","qf","sf","final"];
 
 /* ====================== i18n ====================== */

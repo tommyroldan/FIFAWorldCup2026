@@ -4,11 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pronóstico Mundial 2026 KLG</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2714%27%20fill%3D%27%230c1426%27%2F%3E%3Crect%20x%3D%273%27%20y%3D%273%27%20width%3D%2758%27%20height%3D%2758%27%20rx%3D%2712%27%20fill%3D%27none%27%20stroke%3D%27%23f5c518%27%20stroke-width%3D%272.5%27%20opacity%3D%27.55%27%2F%3E%3Cg%20fill%3D%27%23f5c518%27%3E%3Cpath%20d%3D%27M22%2015%20H42%20V24%20Q42%2033%2032%2033%20Q22%2033%2022%2024%20Z%27%2F%3E%3Crect%20x%3D%2729%27%20y%3D%2733%27%20width%3D%276%27%20height%3D%277%27%20rx%3D%271%27%2F%3E%3Crect%20x%3D%2724%27%20y%3D%2740%27%20width%3D%2716%27%20height%3D%274%27%20rx%3D%271.5%27%2F%3E%3Crect%20x%3D%2720%27%20y%3D%2744%27%20width%3D%2724%27%20height%3D%275%27%20rx%3D%272.5%27%2F%3E%3C%2Fg%3E%3Cpath%20d%3D%27M22%2017%20Q13%2017%2014%2024%20Q14.5%2029%2021%2030%27%20fill%3D%27none%27%20stroke%3D%27%23f5c518%27%20stroke-width%3D%272.6%27%20stroke-linecap%3D%27round%27%2F%3E%3Cpath%20d%3D%27M42%2017%20Q51%2017%2050%2024%20Q49.5%2029%2043%2030%27%20fill%3D%27none%27%20stroke%3D%27%23f5c518%27%20stroke-width%3D%272.6%27%20stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E">
+<meta name="theme-color" content="#0c1426">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>">
-  <style>
+<style>
   :root{
     --bg:#070b16;
     --bg2:#0c1426;
@@ -332,7 +334,7 @@
    While these stay empty the app runs LOCAL-ONLY (no sharing across devices).
    ====================================================================== */
 window.FIREBASE_CONFIG = {
-apiKey: "AIzaSyA1q0KHezoD-ACeLISKKxlUURkdgsMJyyQ",
+  apiKey: "AIzaSyA1q0KHezoD-ACeLISKKxlUURkdgsMJyyQ",
   authDomain: "fifaworldcup2026app.firebaseapp.com",
   databaseURL: "https://fifaworldcup2026app-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "fifaworldcup2026app",
@@ -396,7 +398,7 @@ const TEAMS = [
 const TEAM_BY_CODE = Object.fromEntries(TEAMS.map(t=>[t.c,t]));
 
 /* ====================== SCORING ====================== */
-const POINTS = {r16:1, qf:2, sf:4, final:6, champion:50};
+const POINTS = {r16:1, qf:2, sf:4, final:6, champion:20};
 const ROUND_ORDER = ["r16","qf","sf","final"];
 
 /* ====================== i18n ====================== */
@@ -454,7 +456,11 @@ const I18N = {
     aShareBtn:"📋 Copiar enlace",
     aShareHint:"Copia este enlace y compártelo (WhatsApp, Slack…). Quien lo abra verá esta porra con sus jugadores, pagos y resultados. Vuelve a copiarlo y reenviarlo después de hacer cambios. El enlace funciona una vez publicada la página (GitHub Pages, Netlify…).",
     aShareCopied:"Enlace copiado al portapapeles.",
-    shareLoaded:"Porra cargada desde el enlace compartido."
+    shareLoaded:"Porra cargada desde el enlace compartido.",
+    picksHidden:"Oculto",
+    picksHiddenLong:"Selecciones ocultas hasta que el admin las revele.",
+    revealLabel:"Mostrar selecciones a todos",
+    revealHint:"Mantén las selecciones en secreto hasta que estén todos dentro. Al activarlo, se revelan a todos al instante."
   },
   en:{
     title:"Pronóstico Mundial 2026 KLG",
@@ -509,7 +515,11 @@ const I18N = {
     aShareBtn:"📋 Copy link",
     aShareHint:"Copy this link and share it (WhatsApp, Slack…). Anyone who opens it sees this pool with its players, payments and results. Copy and resend it again after you make changes. The link works once the page is published (GitHub Pages, Netlify…).",
     aShareCopied:"Link copied to clipboard.",
-    shareLoaded:"Pool loaded from the shared link."
+    shareLoaded:"Pool loaded from the shared link.",
+    picksHidden:"Hidden",
+    picksHiddenLong:"Picks hidden until the admin reveals them.",
+    revealLabel:"Reveal picks to everyone",
+    revealHint:"Keep picks secret until everyone has joined. Turning this on reveals them to everyone instantly."
   }
 };
 
@@ -519,7 +529,7 @@ function defaultState(){
   return {
     config:{lang:"es", fee:10, currency:"€", apiKey:"", proxy:"", adminPass:"porra2026"},
     players:[], // {id,name,picks:[c,c,c],paid,createdAt}
-    results:{r16:[],qf:[],sf:[],final:[],champion:null,lastUpdated:null,source:null}
+    results:{r16:[],qf:[],sf:[],final:[],champion:null,revealed:false,lastUpdated:null,source:null}
   };
 }
 let state = load();
@@ -674,18 +684,23 @@ function rowHTML(entry, idx, leaders){
   const isLeader = leaders.has(p.id);
   const rankClass = idx===0?"r1":idx===1?"r2":idx===2?"r3":"";
   const t=L();
-  const detail = parts.map(pt=>{
+  const revealed = !!state.results.revealed;
+  const picksHTML = revealed
+    ? parts.map(pt=>pickPillHTML(pt,eff)).join("")
+    : `<span class="pick" style="color:var(--muted2)"><span class="fl">🔒</span>${t.picksHidden} · ${t.picksHidden} · ${t.picksHidden}</span>`;
+  const detail = revealed ? parts.map(pt=>{
     const chips = ROUND_ORDER.map(rk=>`<span class="chip ${pt.reached[rk]?'on':''}">${t[rk].split(" ")[0]}</span>`).join("")
       + `<span class="chip gold ${pt.reached.champion?'on':''}">👑</span>`;
     return `<div class="tline"><span class="nm"><span class="fl" style="font-size:18px">${tflag(pt.code)}</span>${tname(pt.code)}</span>
       <span class="prog">${chips}<span class="chip" style="background:var(--gold);color:#1a1303;font-weight:700">+${pt.pts}</span></span></div>`;
-  }).join("");
+  }).join("")
+    : `<div class="tline" style="color:var(--muted2)"><span class="nm">🔒 ${t.picksHiddenLong}</span></div>`;
   return `<div class="row ${rankClass} ${isLeader?'leader':''}" data-pid="${p.id}">
     <div class="main">
       <div class="rank">${idx+1}</div>
       <div>
         <div class="pl-name">${isLeader?'<span class="crown">👑</span>':''}<span class="nm">${escapeHtml(p.name)}</span></div>
-        <div class="picks">${parts.map(pt=>pickPillHTML(pt,eff)).join("")}</div>
+        <div class="picks">${picksHTML}</div>
       </div>
       <div class="pts">${total}<small>${t.pts}</small></div>
       <div class="badge ${p.paid?'paid':'unpaid'}">${p.paid?t.paidB:t.unpaidB}</div>
@@ -820,6 +835,10 @@ function renderAdmin(){
         <input class="in" id="ad-cur" value="${escapeAttr(c.currency)}" maxlength="4">
         <label class="fld" style="margin-top:10px">${t.aPass}</label>
         <input class="in" id="ad-pass" value="${escapeAttr(c.adminPass)}">
+        <div class="arow between" style="margin-top:14px;padding-top:13px;border-top:1px solid var(--line-soft)">
+          <div style="flex:1;min-width:0;padding-right:10px"><div style="font-weight:700">👁️ ${t.revealLabel}</div><div class="hint" style="margin-top:3px">${t.revealHint}</div></div>
+          <span class="toggle ${state.results.revealed?'on':''}" id="ad-reveal" role="button" aria-label="reveal picks"></span>
+        </div>
         <button class="btn green sm block" id="ad-savecfg" style="margin-top:12px">💾 ${t.aSaved.replace('.','')}</button>
       </div>
 
@@ -874,8 +893,7 @@ function renderAdmin(){
     state.config.adminPass = document.getElementById("ad-pass").value||"porra2026";
     save(); pushConfig(); renderStrip(); toast(L().aSaved,"ok");
   };
-  document.getElementById("ad-champ").onchange=(e)=>{
-    state.results.champion = e.target.value||null;
+  document.getElementById("ad-champ").onchange=(e)=>{    state.results.champion = e.target.value||null;
     if(state.results.champion && !(state.results.final||[]).includes(state.results.champion)){
       state.results.final=[...new Set([...(state.results.final||[]),state.results.champion])];
     }
@@ -891,6 +909,8 @@ function renderAdmin(){
   const shareInp=document.getElementById("ad-sharelink");
   if(shareInp) shareInp.onclick=()=>{ shareInp.value=shareURL(); shareInp.select(); };
   document.getElementById("ad-sharebtn").onclick=copyShare;
+  const rv=document.getElementById("ad-reveal");
+  if(rv) rv.onclick=()=>{ state.results.revealed=!state.results.revealed; save(); pushResults(); rv.classList.toggle("on",state.results.revealed); renderBoard(); };
 }
 function stampManual(){ state.results.lastUpdated=Date.now(); state.results.source="manual"; }
 
